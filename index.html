@@ -22,9 +22,61 @@
     <meta name="twitter:title" content="Hecho a Mano — Atelier &amp; escuela de costura · Vigo" />
     <meta name="twitter:description" content="Tienda y escuela de costura en Vigo. Clases, bordados a medida y materiales." />
     <meta name="twitter:image" content="https://hechoenvigo.com/og-image.jpg" />
+    <link rel="preload" href="/fonts/Tumbly.otf" as="font" type="font/otf" crossorigin />
     <link rel="preload" href="/fonts/CormorantGaramond-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/CormorantGaramond-Italic-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="/fonts/InterTight-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="preload" href="/fonts/JetBrainsMono-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
+    <!-- Hero grid images — preloaded so browser fetches them before JS runs -->
+    <link rel="preload" href="/hero-maquina-de-coser.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/hero-hilos-de-seda.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/hero-logo.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/hero-la-tienda.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/hero-hilo-aguja.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/hero-materiales-taller.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/impresion-3d.webp" as="image" type="image/webp" />
+    <style>
+      html, body { background: #f5efe6; }
+      #loader {
+        position: fixed;
+        inset: 0;
+        background: #f5efe6;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transition: opacity 0.5s ease;
+      }
+      #loader.fade-out { opacity: 0; pointer-events: none; }
+      .loader-wordmark {
+        height: 2.75rem;
+        width: auto;
+        opacity: 0.85;
+      }
+      .loader-track {
+        width: 120px;
+        height: 2px;
+        background: #d7c9b0;
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+      }
+      .loader-thread {
+        position: absolute;
+        inset: 0;
+        background: #9e5704;
+        border-radius: 2px;
+        transform: translateX(-100%);
+        animation: thread 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      @keyframes thread {
+        0%   { transform: translateX(-100%); }
+        50%  { transform: translateX(0%); }
+        100% { transform: translateX(100%); }
+      }
+    </style>
     <script>
       /* Proportional zoom: keeps the same UI-to-viewport ratio across desktop resolutions.
          Baseline = 2200×1240. Below 1280px (mobile) we drop zoom and let media queries take over. */
@@ -46,10 +98,29 @@
         window.addEventListener('resize', applyZoom);
       })();
     </script>
-    <script type="module" crossorigin src="/assets/index-BBWBkp0S.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Db7S0q6X.css">
+    <script type="module" crossorigin src="/assets/index-P-52wHFi.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-uyNWKV5S.css">
   </head>
   <body>
+    <div id="loader">
+      <img class="loader-wordmark" src="/loader-wordmark.webp" alt="Hecho a Mano" />
+      <div class="loader-track"><div class="loader-thread"></div></div>
+    </div>
     <div id="root"></div>
+    <script>
+      (function () {
+        var fontsReady = false;
+        var appReady = false;
+        function dismiss() {
+          if (!fontsReady || !appReady) return;
+          var loader = document.getElementById('loader');
+          if (!loader) return;
+          loader.classList.add('fade-out');
+          setTimeout(function () { loader.remove(); }, 500);
+        }
+        document.fonts.ready.then(function () { fontsReady = true; dismiss(); });
+        window.__appReady = function () { appReady = true; dismiss(); };
+      })();
+    </script>
   </body>
 </html>
